@@ -1,0 +1,37 @@
+tasks:
+  clone-additional-repos:
+    name: Clone Additional Repos
+    description: Clones git repositories specified in MY_ADDITIONAL_REPOS env var
+    triggeredBy:
+      - postDevcontainerStart
+    command: |
+      #!/bin/bash
+      set -e
+
+      if [ -z "$MY_ADDITIONAL_REPOS" ]; then
+        echo "MY_ADDITIONAL_REPOS is not set, skipping"
+        exit 0
+      fi
+
+      echo "Cloning additional repositories from MY_ADDITIONAL_REPOS..."
+
+      IFS=';' read -ra REPOS <<< "$MY_ADDITIONAL_REPOS"
+      for repo in "${REPOS[@]}"; do
+        repo=$(echo "$repo" | xargs)  # trim whitespace
+        if [ -z "$repo" ]; then
+          continue
+        fi
+
+        # Extract repo name from URL
+        repo_name=$(basename "$repo" .git)
+        target_dir="/workspaces/$repo_name"
+
+        if [ -d "$target_dir" ]; then
+          echo "Repository $repo_name already exists at $target_dir, skipping"
+        else
+          echo "Cloning $repo into $target_dir..."
+          git clone "$repo" "$target_dir"
+        fi
+      done
+
+      echo "Done cloning additional repositories"

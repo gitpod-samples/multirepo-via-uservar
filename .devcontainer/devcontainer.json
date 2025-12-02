@@ -1,0 +1,6 @@
+{
+	"name": "Ona",
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+	"workspaceMount": "source=/workspaces,target=/workspaces,type=bind",
+	"workspaceFolder": "/workspaces"
+}
