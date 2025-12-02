@@ -3,7 +3,7 @@
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
 	"workspaceMount": "source=/workspaces,target=/workspaces,type=bind",
 	"workspaceFolder": "/workspaces",
-	"postStartCommand": ".devcontainer/clone_repos.sh",
+	"postStartCommand": "${localWorkspaceFolder}/.devcontainer/clone_repos.sh",
 	"remoteEnv": {
 		"PATH": "${containerEnv:PATH}:${localWorkspaceFolder}/.devcontainer"
 	}
