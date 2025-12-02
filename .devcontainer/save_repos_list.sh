@@ -2,7 +2,9 @@
 # Saves cloned repos in /workspaces to MY_ADDITIONAL_REPOS user secret.
 set -e
 
-MAIN_REPO="multi-repo-via-env-var"
+# Detect main repo from script location
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MAIN_REPO="$(basename "$(dirname "$SCRIPT_DIR")")"
 
 # Login if needed
 if gitpod whoami 2>/dev/null | grep -q "PRINCIPAL_ENVIRONMENT"; then
