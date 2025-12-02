@@ -2,5 +2,9 @@
 	"name": "Ona",
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
 	"workspaceMount": "source=/workspaces,target=/workspaces,type=bind",
-	"workspaceFolder": "/workspaces"
+	"workspaceFolder": "/workspaces",
+	"postStartCommand": "IFS=';' read -ra REPOS <<< \"$MY_ADDITIONAL_REPOS\"; for repo in \"${REPOS[@]}\"; do [ -z \"$repo\" ] && continue; name=$(basename \"$repo\" .git); [ -d \"/workspaces/$name\" ] || git clone \"$repo\" \"/workspaces/$name\"; done",
+	"remoteEnv": {
+		"PATH": "${containerEnv:PATH}:/workspaces/multi-repo-via-env-var/.devcontainer"
+	}
 }
